@@ -69,7 +69,8 @@ export function HeroSection({
 
   return (
     <section
-      className="relative min-h-screen w-full overflow-hidden flex items-center justify-center"
+      data-snap-section="true"
+      className="relative min-h-[100svh] w-full overflow-hidden flex items-center justify-center snap-start snap-always"
       style={{ backgroundColor: "rgb(15, 15, 15)" }}
     >
       <video

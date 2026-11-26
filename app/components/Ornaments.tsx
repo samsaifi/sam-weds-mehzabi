@@ -108,10 +108,12 @@ export function RevealSection({
   children,
   className = "",
   withTopWave = true,
+  snap = true,
 }: {
   children: React.ReactNode;
   className?: string;
   withTopWave?: boolean;
+  snap?: boolean;
 }) {
   const ref = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
@@ -159,7 +161,10 @@ export function RevealSection({
   return (
     <section
       ref={ref}
-      className={`py-16 md:py-20 px-[clamp(3.75rem,15vw,15rem)] relative overflow-hidden reveal-section ${className}`}
+      data-snap-section={snap ? "true" : undefined}
+      className={`py-14 md:py-18 px-[clamp(3.75rem,15vw,15rem)] relative overflow-hidden reveal-section ${
+        snap ? "min-h-[100svh] flex flex-col justify-center snap-start snap-always" : ""
+      } ${className}`}
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0px)" : "translateY(32px)",

@@ -68,7 +68,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${greatVibes.variable} ${dancingScript.variable} ${cormorantGaramond.variable} ${playfairDisplay.variable} ${lora.variable} ${notoUrdu.variable} ${notoHindi.variable} h-full scroll-smooth antialiased`}
+      className={`${greatVibes.variable} ${dancingScript.variable} ${cormorantGaramond.variable} ${playfairDisplay.variable} ${lora.variable} ${notoUrdu.variable} ${notoHindi.variable} h-full scroll-smooth snap-y snap-mandatory antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#f9f7f1] text-[#27331f]">
         {children}

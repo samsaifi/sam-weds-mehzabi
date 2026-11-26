@@ -150,6 +150,7 @@ export function RoyalGraceTemplate({ config }: { config: InvitationConfig }) {
   const [videoPlaying, setVideoPlaying] = useState(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const chordIntervalRef = useRef<number | null>(null);
+  const snapLockUntilRef = useRef<number>(0);
 
   const availableLocales = LOCALE_LABELS.filter((item) =>
     Boolean(config.locales[item.code])
@@ -158,6 +159,67 @@ export function RoyalGraceTemplate({ config }: { config: InvitationConfig }) {
   const isEnglish = activeLocale === "en";
   const isRtl = activeLocale === "ur";
   const copy = config.locales[activeLocale] ?? config.locales.en;
+
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) < 8 || Math.abs(e.deltaY) <= Math.abs(e.deltaX)) {
+        return;
+      }
+
+      const now = Date.now();
+      if (now < snapLockUntilRef.current) {
+        e.preventDefault();
+        return;
+      }
+
+      const sections = Array.from(
+        document.querySelectorAll<HTMLElement>('[data-snap-section="true"]')
+      );
+      if (sections.length === 0) return;
+
+      const vh = window.innerHeight;
+      const mid = vh / 2;
+
+      let currentIdx = sections.findIndex((el) => {
+        const rect = el.getBoundingClientRect();
+        return rect.top <= mid && rect.bottom >= mid;
+      });
+      if (currentIdx === -1) {
+        currentIdx = 0;
+        let bestDist = Infinity;
+        sections.forEach((el, idx) => {
+          const dist = Math.abs(el.getBoundingClientRect().top);
+          if (dist < bestDist) {
+            bestDist = dist;
+            currentIdx = idx;
+          }
+        });
+      }
+
+      const currentRect = sections[currentIdx].getBoundingClientRect();
+      const goingDown = e.deltaY > 0;
+
+      // Allow normal scrolling inside a section taller than the viewport
+      if (goingDown && currentRect.bottom > vh + 12) return;
+      if (!goingDown && currentRect.top < -12) return;
+
+      const targetIdx = goingDown
+        ? Math.min(sections.length - 1, currentIdx + 1)
+        : Math.max(0, currentIdx - 1);
+
+      if (targetIdx === currentIdx) return;
+
+      e.preventDefault();
+      snapLockUntilRef.current = now + 700;
+      sections[targetIdx].scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    return () => window.removeEventListener("wheel", handleWheel);
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -323,7 +385,10 @@ export function RoyalGraceTemplate({ config }: { config: InvitationConfig }) {
         }}
       >
         {/* Welcome Blessing Message */}
-        <section className="relative px-[clamp(4rem,16vw,15rem)] py-24 md:py-32 overflow-hidden">
+        <section
+          data-snap-section="true"
+          className="relative min-h-[100svh] flex flex-col justify-center snap-start snap-always px-[clamp(4rem,16vw,15rem)] py-16 md:py-24 overflow-hidden"
+        >
           <div className="max-w-xl mx-auto text-center relative">
             <GoldHeartDivider className="mb-8" />
             <p
@@ -467,6 +532,8 @@ export function RoyalGraceTemplate({ config }: { config: InvitationConfig }) {
 
           {/* Closing & Footer framed by bottom floral bouquet image */}
           <div
+            data-snap-section="true"
+            className="min-h-[100svh] flex flex-col justify-between snap-start snap-always"
             style={{
               backgroundImage: `url('${config.media.endBackground}')`,
               backgroundPosition: "center bottom",
@@ -474,7 +541,10 @@ export function RoyalGraceTemplate({ config }: { config: InvitationConfig }) {
               backgroundSize: "100% auto",
             }}
           >
-            <RevealSection>
+            <RevealSection
+              snap={false}
+              className="flex-1 flex flex-col justify-center"
+            >
               <div className="max-w-lg mx-auto text-center">
                 <WaveDivider className="w-full text-primary mb-8" />
                 <p
