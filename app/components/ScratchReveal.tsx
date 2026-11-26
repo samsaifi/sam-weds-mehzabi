@@ -8,7 +8,7 @@ import {
   type InvitationCopy,
   type Locale,
 } from "../data/invitation-data";
-import { HeartDivider, RevealSection } from "./Ornaments";
+import { GoldBotanicalCrest, GoldHeartDivider, RevealSection } from "./Ornaments";
 
 interface ConfettiPiece {
   id: number;
@@ -47,10 +47,14 @@ export function ScratchReveal({
   copy,
   eventConfig,
   locale,
+  embedded = false,
+  onReveal,
 }: {
   copy: InvitationCopy;
   eventConfig: EventConfig;
   locale: Locale;
+  embedded?: boolean;
+  onReveal?: () => void;
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const isDrawingRef = useRef(false);
@@ -74,52 +78,52 @@ export function ScratchReveal({
     ctx.globalCompositeOperation = "source-over";
     ctx.clearRect(0, 0, width, height);
 
-    // Base puffed metallic sage-silver foil gradient
+    // Base luxurious brushed gold metallic foil gradient
     const baseGrad = ctx.createRadialGradient(
-      width * 0.38,
-      height * 0.28,
-      8,
+      width * 0.34,
+      height * 0.26,
+      10,
       width * 0.5,
-      height * 0.48,
-      width * 0.65
+      height * 0.5,
+      width * 0.68
     );
-    baseGrad.addColorStop(0, "#eef1e8");
-    baseGrad.addColorStop(0.28, "#ced5c3");
-    baseGrad.addColorStop(0.62, "#9eab90");
-    baseGrad.addColorStop(0.88, "#7e8e70");
-    baseGrad.addColorStop(1, "#67765b");
+    baseGrad.addColorStop(0, "#faeaab");
+    baseGrad.addColorStop(0.28, "#e6c05e");
+    baseGrad.addColorStop(0.6, "#c89632");
+    baseGrad.addColorStop(0.88, "#a6751d");
+    baseGrad.addColorStop(1, "#875c11");
     ctx.fillStyle = baseGrad;
     ctx.fillRect(0, 0, width, height);
 
-    // Diagonal metallic foil sheen bands
+    // Diagonal metallic gold sheen bands
     const sheenGrad = ctx.createLinearGradient(0, 0, width, height);
-    sheenGrad.addColorStop(0, "rgba(255, 255, 255, 0.16)");
+    sheenGrad.addColorStop(0, "rgba(255, 248, 214, 0.28)");
     sheenGrad.addColorStop(0.35, "rgba(255, 255, 255, 0)");
-    sheenGrad.addColorStop(0.5, "rgba(255, 255, 255, 0.22)");
-    sheenGrad.addColorStop(0.65, "rgba(255, 255, 255, 0)");
-    sheenGrad.addColorStop(1, "rgba(35, 48, 28, 0.18)");
+    sheenGrad.addColorStop(0.5, "rgba(255, 247, 205, 0.35)");
+    sheenGrad.addColorStop(0.68, "rgba(255, 255, 255, 0)");
+    sheenGrad.addColorStop(1, "rgba(104, 68, 8, 0.24)");
     ctx.fillStyle = sheenGrad;
     ctx.fillRect(0, 0, width, height);
 
-    // Brushed metallic foil micro-lines
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+    // Brushed gold foil streaks
+    ctx.strokeStyle = "rgba(255, 246, 200, 0.16)";
     ctx.lineWidth = 1;
-    for (let i = -height; i < width + height; i += 4) {
+    for (let i = -height; i < width + height; i += 3) {
       ctx.beginPath();
       ctx.moveTo(i, 0);
-      ctx.lineTo(i - height * 0.6, height);
+      ctx.lineTo(i - height * 0.65, height);
       ctx.stroke();
     }
 
-    // Fine metallic foil grain & sparkle flecks (deterministic pattern)
-    for (let y = 3; y < height; y += 5) {
-      for (let x = 3; x < width; x += 5) {
+    // Fine metallic gold glitter & depth flecks (deterministic)
+    for (let y = 3; y < height; y += 4) {
+      for (let x = 3; x < width; x += 4) {
         const hash = ((x * 73856093) ^ (y * 19349663)) >>> 0;
-        if (hash % 11 === 0) {
-          ctx.fillStyle = "rgba(255, 255, 255, 0.24)";
+        if (hash % 9 === 0) {
+          ctx.fillStyle = "rgba(255, 250, 224, 0.32)";
           ctx.fillRect(x, y, 1.5, 1.5);
-        } else if (hash % 17 === 0) {
-          ctx.fillStyle = "rgba(42, 56, 35, 0.12)";
+        } else if (hash % 13 === 0) {
+          ctx.fillStyle = "rgba(110, 74, 12, 0.18)";
           ctx.fillRect(x, y, 1.5, 1.5);
         }
       }
@@ -148,10 +152,11 @@ export function ScratchReveal({
   const triggerReveal = useCallback(() => {
     if (revealed) return;
     setRevealed(true);
+    onReveal?.();
     setConfettiPieces(createConfettiPieces());
     setShowConfetti(true);
     window.setTimeout(() => setShowConfetti(false), 3400);
-  }, [revealed]);
+  }, [revealed, onReveal]);
 
   const scratchAt = (clientX: number, clientY: number, isStart = false) => {
     const canvas = canvasRef.current;
@@ -261,8 +266,8 @@ export function ScratchReveal({
 
   const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventConfig.calendarTitle)}&dates=${encodeURIComponent(`${eventConfig.calendarStartUtc}/${eventConfig.calendarEndUtc}`)}&details=${encodeURIComponent(eventConfig.calendarDescription)}&location=${encodeURIComponent(eventConfig.calendarLocation)}`;
 
-  return (
-    <RevealSection>
+  const content = (
+    <>
       <div className="text-center">
         <svg width="0" height="0" aria-hidden="true" className="absolute">
           <defs>
@@ -273,27 +278,32 @@ export function ScratchReveal({
         </svg>
 
         <div>
+          <GoldBotanicalCrest className="mb-1" />
           <h2
-            className={`text-4xl md:text-5xl mb-3 ${
+            className={`${
+              embedded ? "text-3xl sm:text-4xl md:text-5xl mb-1" : "text-4xl md:text-5xl mb-2"
+            } ${
               locale === "en"
                 ? "font-calligraphy"
                 : `${getLocaleFontClass(locale, "")} font-bold`
             }`}
             style={{
-              color: "rgb(74, 92, 61)",
-              textShadow: "rgba(250, 249, 244, 0.8) 0px 1px 6px",
+              color: "#1d3b27",
+              textShadow: "rgba(250, 249, 244, 0.85) 0px 1px 6px",
             }}
           >
             {copy.scratch.title}
           </h2>
-          <HeartDivider />
+          <GoldHeartDivider className="my-3" />
         </div>
 
         {/* Heart Scratch Card Patch with outer drop shadow */}
         <div
-          className="relative mx-auto aspect-[13/12] w-full max-w-[220px] sm:max-w-[260px] select-none"
+          className={`relative mx-auto aspect-[13/12] w-full select-none ${
+            embedded ? "max-w-[195px] sm:max-w-[230px]" : "max-w-[230px] sm:max-w-[270px]"
+          }`}
           style={{
-            filter: "drop-shadow(0px 12px 20px rgba(45, 58, 36, 0.34))",
+            filter: "drop-shadow(0px 12px 22px rgba(96, 68, 16, 0.34))",
           }}
           onDoubleClick={triggerReveal}
         >
@@ -305,20 +315,19 @@ export function ScratchReveal({
             <div
               className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
               style={{
-                backgroundColor: "rgb(249, 247, 241)",
+                backgroundColor: "rgb(251, 249, 244)",
                 backgroundImage:
-                  "radial-gradient(rgba(254, 253, 251, 0.92) 0%, rgba(239, 234, 220, 0.6) 70%, rgba(226, 219, 202, 0.72) 100%), radial-gradient(circle at 1px 1px, rgba(68, 89, 54, 0.1) 1px, transparent 1.5px), repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 8px), repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.025) 0px, rgba(0, 0, 0, 0.025) 1px, transparent 1px, transparent 10px)",
-                backgroundSize: "auto, 12px 12px, auto, auto",
+                  "radial-gradient(rgba(255, 254, 250, 0.96) 0%, rgba(245, 239, 224, 0.85) 70%, rgba(232, 217, 180, 0.72) 100%)",
               }}
             >
               <p
-                className={`text-xl mb-1 transition-all duration-500 ${
+                className={`text-lg sm:text-xl mb-1 transition-all duration-500 ${
                   locale === "en"
                     ? "font-calligraphic italic"
                     : getLocaleFontClass(locale, "")
                 }`}
                 style={{
-                  color: "rgb(74, 92, 61)",
+                  color: "#1d3b27",
                   opacity: revealed || hasScratched ? 1 : 0,
                   transform: revealed ? "scale(1)" : "scale(0.95)",
                 }}
@@ -326,23 +335,27 @@ export function ScratchReveal({
                 {copy.scratch.revealLabel}
               </p>
               <p
-                className="font-display text-base font-bold"
-                style={{ color: "rgb(39, 51, 31)" }}
+                className="font-display text-sm sm:text-base font-bold"
+                style={{ color: "#1d3b27" }}
               >
                 {copy.scratch.date}
               </p>
               <p
-                className="font-calligraphic text-sm"
-                style={{ color: "rgb(79, 100, 64)" }}
+                className="font-calligraphic text-xs sm:text-sm"
+                style={{ color: "#2b4d36" }}
               >
                 {copy.scratch.day}
               </p>
               <p
-                className="text-[10px] mt-1"
-                style={{ color: "rgb(95, 109, 85)" }}
+                className="font-display text-[11px] font-semibold mt-0.5"
+                style={{ color: "#2b4d36" }}
               >
                 {copy.scratch.time}
               </p>
+              <span
+                aria-hidden="true"
+                className="mt-1 inline-block w-1.5 h-1.5 rotate-45 bg-[#c79d42]/80"
+              />
             </div>
 
             {/* Interactive Metallic Scratch Foil Canvas */}
@@ -396,7 +409,7 @@ export function ScratchReveal({
             />
           </div>
 
-          {/* Crisp sage border outline */}
+          {/* Crisp metallic gold rim outline */}
           <svg
             viewBox="0 0 100 100"
             className="absolute inset-0 w-full h-full pointer-events-none"
@@ -406,17 +419,76 @@ export function ScratchReveal({
             <path
               d="M50,96 C50,96 6,70 6,36 C6,18 20,6 32,6 C42,6 48,14 50,24 C52,14 58,6 68,6 C80,6 94,18 94,36 C94,70 50,96 50,96 Z"
               fill="none"
-              stroke="hsl(95, 22%, 32%)"
-              strokeWidth="1.2"
+              stroke="#b88826"
+              strokeWidth="1.8"
               vectorEffect="non-scaling-stroke"
-              opacity="0.7"
+              opacity="0.88"
             />
           </svg>
+
+          {/* Golden embossed lotus scratch coin resting on the edge */}
+          {!revealed && (
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -bottom-1 right-1 sm:right-2 w-10 h-10 sm:w-12 sm:h-12 rounded-full transition-opacity duration-500"
+              style={{
+                opacity: hasScratched ? 0.5 : 1,
+                filter: "drop-shadow(0 6px 10px rgba(72, 48, 8, 0.38))",
+              }}
+            >
+              <svg viewBox="0 0 48 48" className="w-full h-full">
+                <defs>
+                  <radialGradient id="gold-coin-grad" cx="35%" cy="30%" r="70%">
+                    <stop offset="0%" stopColor="#fbe9a7" />
+                    <stop offset="55%" stopColor="#d8a63c" />
+                    <stop offset="100%" stopColor="#946716" />
+                  </radialGradient>
+                </defs>
+                <circle
+                  cx="24"
+                  cy="24"
+                  r="21"
+                  fill="url(#gold-coin-grad)"
+                  stroke="#7b530e"
+                  strokeWidth="1.5"
+                />
+                <circle
+                  cx="24"
+                  cy="24"
+                  r="17.5"
+                  fill="none"
+                  stroke="#fef3c7"
+                  strokeWidth="0.9"
+                  opacity="0.7"
+                />
+                {/* Embossed lotus motif */}
+                <path
+                  d="M24 13C26.5 17 26.5 22 24 26C21.5 22 21.5 17 24 13Z"
+                  fill="none"
+                  stroke="#7b530e"
+                  strokeWidth="1.2"
+                />
+                <path
+                  d="M24 26C19 24.5 15.5 20.5 15.5 16.5C19 17.5 22 21 24 26ZM24 26C29 24.5 32.5 20.5 32.5 16.5C29 17.5 26 21 24 26Z"
+                  fill="none"
+                  stroke="#7b530e"
+                  strokeWidth="1.15"
+                />
+                <path
+                  d="M14.5 27.5C18 28.5 21.5 28 24 26C26.5 28 30 28.5 33.5 27.5"
+                  fill="none"
+                  stroke="#7b530e"
+                  strokeWidth="1.1"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </div>
+          )}
         </div>
 
         {/* Subtle hint below the heart foil patch */}
         {!revealed && (
-          <p className="mt-3 text-xs italic text-muted-foreground/85 font-calligraphic tracking-wide">
+          <p className="mt-2.5 text-xs italic text-[#4e6147] font-calligraphic tracking-wide">
             {copy.scratch.hint}
           </p>
         )}
@@ -425,15 +497,17 @@ export function ScratchReveal({
       {/* Save the Date Button + Calendar Dropdown */}
       <div
         ref={menuWrapperRef}
-        className="mt-8 flex flex-col items-center relative"
+        className={`${embedded ? "mt-4" : "mt-7"} flex flex-col items-center relative`}
       >
         <button
           type="button"
           onClick={() => setMenuOpen((prev) => !prev)}
           aria-expanded={menuOpen}
-          className="group inline-flex items-center gap-2 rounded-full px-6 py-3 text-xs md:text-sm font-semibold uppercase tracking-[0.18em] transition-all duration-300 bg-primary text-primary-foreground hover:opacity-95 cursor-pointer"
+          className="group inline-flex items-center gap-2 rounded-full px-7 py-2.5 text-xs md:text-sm font-semibold uppercase tracking-[0.18em] transition-all duration-300 text-[#fbf5e6] border border-[#cfa856] hover:opacity-95 cursor-pointer"
           style={{
-            boxShadow: "rgba(0, 0, 0, 0.45) 0px 12px 30px -12px",
+            background: "linear-gradient(180deg, #254830 0%, #193422 100%)",
+            boxShadow:
+              "0 8px 20px -8px rgba(25, 52, 34, 0.55), inset 0 0 0 1px rgba(235, 206, 132, 0.25)",
           }}
         >
           <CalendarPlus className="w-4 h-4" />
@@ -441,7 +515,7 @@ export function ScratchReveal({
         </button>
 
         {menuOpen && (
-          <div className="mt-3 w-60 rounded-xl border border-primary/25 bg-[#faf7ef]/95 backdrop-blur-md shadow-elegant p-1.5 z-30 text-left">
+          <div className="absolute top-full mt-2 w-60 rounded-xl border border-primary/25 bg-[#faf7ef]/95 backdrop-blur-md shadow-elegant p-1.5 z-30 text-left">
             <a
               href={googleCalendarUrl}
               target="_blank"
@@ -507,6 +581,8 @@ export function ScratchReveal({
           ))}
         </div>
       )}
-    </RevealSection>
+    </>
   );
+
+  return embedded ? <div>{content}</div> : <RevealSection>{content}</RevealSection>;
 }

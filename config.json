@@ -35,6 +35,10 @@
         "subtext": "Daughter of Mr. Umar Saifi &\nMrs. Shagufta Saifi"
       },
       "welcomeMessage": "We are honored to welcome you to the Wedding ceremony of Sam Saiif & Nora Saifi\nAs they begin their journey together in faith and love,\nwe thank you for being part of this blessed occasion ❤",
+      "welcomeIntro": "We are honored to welcome \n you tothe Wedding \n ceremony of",
+      "welcomeCoupleLeft": "Sam Saiif",
+      "welcomeCoupleRight": "Nora Saifi",
+      "welcomeBlessing": "As they begin their journey\ntogether in faith and love,\nwe thank you for being part of\n thisblessed occasion ❤",
       "scratch": {
         "title": "Scratch to Reveal",
         "hint": "Scratch the heart",
@@ -59,11 +63,24 @@
         "title": "Program Timeline",
         "days": [
           {
+            "date": "Monday, Jan 18, 2027",
+            "events": [
+              {
+                "time": "7:00 PM",
+                "title": "Mandah"
+              },
+              {
+                "time": "10:00 PM",
+                "title": "Haldi"
+              }
+            ]
+          },
+          {
             "date": "Tuesday, Jan 19, 2027",
             "events": [
               {
                 "time": "4:00 PM",
-                "title": "Choti Sehra / Sehra Bandi",
+                "title": "Sehra Bandi",
                 "description": "Sehra Bandi Ceremony"
               },
               {
@@ -94,25 +111,7 @@
         "title": "Venue",
         "name": "ROYAL PALACE BANQUET HALL",
         "address": "94MC+QQ9, Jassaganja, Shivlalpur Khazanchi, Uttarakhand 244715",
-        "openMap": "Open in Google Maps"
-      },
-      "preWedding": {
-        "title": "Pre-Wedding Events",
-        "days": [
-          {
-            "date": "Monday, Jan 18, 2027",
-            "events": [
-              {
-                "time": "7:00 PM",
-                "title": "Mandah"
-              },
-              {
-                "time": "10:00 PM",
-                "title": "Haldi"
-              }
-            ]
-          }
-        ]
+        "openMap": " "
       },
       "gifts": {
         "title": "Gifts",
@@ -135,6 +134,10 @@
         "subtext": "دخترِ جناب عمر سیفی\nو محترمہ شگفتہ سیفی"
       },
       "welcomeMessage": "ہم سام سیفی اور نورا سیفی کی شادی کی بابرکت تقریب میں آپ کا دل کی گہرائیوں سے خیر مقدم کرتے ہیں\nایمان اور محبت کے اس نئے سفر کے آغاز پر، اس خوشی کے موقع پر آپ کی شرکت ہمارے لیے باعثِ اعزاز ہے ❤",
+      "welcomeIntro": "ہم دل کی گہرائیوں سے خیر مقدم کرتے ہیں\nشادی کی بابرکت تقریب میں",
+      "welcomeCoupleLeft": "سام سیفی",
+      "welcomeCoupleRight": "نورا سیفی",
+      "welcomeBlessing": "ایمان اور محبت کے اس نئے سفر کے آغاز پر،\nاس خوشی کے موقع پر آپ کی شرکت\nہمارے لیے باعثِ اعزاز ہے ❤",
       "scratch": {
         "title": "تاریخ دیکھنے کے لیے کھرچیں",
         "hint": "دل کو کھرچیں",
@@ -159,11 +162,24 @@
         "title": "پروگرام کی تفصیل",
         "days": [
           {
+            "date": "پیر، 18 جنوری 2027",
+            "events": [
+              {
+                "time": "7:00 PM",
+                "title": "منڈھا"
+              },
+              {
+                "time": "10:00 PM",
+                "title": "ہلدی"
+              }
+            ]
+          },
+          {
             "date": "منگل، 19 جنوری 2027",
             "events": [
               {
                 "time": "4:00 PM",
-                "title": "چھوٹی سہرا / سہرا بندی",
+                "title": "سہرا بندی",
                 "description": "رسمِ سہرا بندی"
               },
               {
@@ -196,24 +212,6 @@
         "address": "94MC+QQ9، جسّاگنجہ، شولال پور خزانچی، اتراکھنڈ 244715",
         "openMap": "گوگل میپس میں کھولیں"
       },
-      "preWedding": {
-        "title": "شادی سے قبل کی تقریبات",
-        "days": [
-          {
-            "date": "پیر، 18 جنوری 2027",
-            "events": [
-              {
-                "time": "7:00 PM",
-                "title": "منڈھا"
-              },
-              {
-                "time": "10:00 PM",
-                "title": "ہلدی"
-              }
-            ]
-          }
-        ]
-      },
       "gifts": {
         "title": "تحائف",
         "description": "آپ کی محبت، دعائیں اور تشریف آوری ہمارے لیے سب سے قیمتی تحفہ ہے۔"
@@ -235,6 +233,10 @@
         "subtext": "सुपुत्री श्री उमर सैफ़ी\nएवं श्रीमती शगुफ्ता सैफ़ी"
       },
       "welcomeMessage": "सैम सैफ़ी और नोरा सैफ़ी के शुभ विवाह समारोह में आपका हार्दिक स्वागत है\nविश्वास और प्रेम की इस नई यात्रा की शुरुआत पर, इस पावन अवसर में शामिल होने के लिए हम आपके आभारी हैं ❤",
+      "welcomeIntro": "शुभ विवाह समारोह में आपका हार्दिक स्वागत है",
+      "welcomeCoupleLeft": "सैम सैफ़ी",
+      "welcomeCoupleRight": "नोरा सैफ़ी",
+      "welcomeBlessing": "विश्वास और प्रेम की इस नई यात्रा की शुरुआत पर,\nइस पावन अवसर में शामिल होने के लिए\nहम आपके आभारी हैं ❤",
       "scratch": {
         "title": "तारीख़ देखने के लिए स्क्रैच करें",
         "hint": "दिल को स्क्रैच करें",
@@ -259,11 +261,24 @@
         "title": "कार्यक्रम समय-सारणी",
         "days": [
           {
+            "date": "सोमवार, 18 जनवरी 2027",
+            "events": [
+              {
+                "time": "7:00 PM",
+                "title": "मंढा"
+              },
+              {
+                "time": "10:00 PM",
+                "title": "हल्दी"
+              }
+            ]
+          },
+          {
             "date": "मंगलवार, 19 जनवरी 2027",
             "events": [
               {
                 "time": "4:00 PM",
-                "title": "छोटी सेहरा / सेहरा बंदी",
+                "title": "सेहरा बंदी",
                 "description": "सेहरा बंदी रस्म"
               },
               {
@@ -295,24 +310,6 @@
         "name": "रॉयल पैलेस बैंक्वेट हॉल",
         "address": "94MC+QQ9, जस्सागंजा, शिवलालपुर खजांची, उत्तराखंड 244715",
         "openMap": "गूगल मैप्स में खोलें"
-      },
-      "preWedding": {
-        "title": "विवाह-पूर्व कार्यक्रम",
-        "days": [
-          {
-            "date": "सोमवार, 18 जनवरी 2027",
-            "events": [
-              {
-                "time": "7:00 PM",
-                "title": "मंढा"
-              },
-              {
-                "time": "10:00 PM",
-                "title": "हल्दी"
-              }
-            ]
-          }
-        ]
       },
       "gifts": {
         "title": "उपहार",

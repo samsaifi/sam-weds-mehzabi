@@ -70,7 +70,7 @@ export function HeroSection({
   return (
     <section
       data-snap-section="true"
-      className="relative min-h-[100svh] w-full overflow-hidden flex items-center justify-center snap-start snap-always"
+      className="relative min-h-[100svh] w-full overflow-hidden flex items-center justify-center"
       style={{ backgroundColor: "rgb(15, 15, 15)" }}
     >
       <video
@@ -142,11 +142,10 @@ export function HeroSection({
 
         <h1
           data-couple-name="groom"
-          className={`leading-none font-bold transition-all duration-700 delay-200 ${
-            isEnglish
+          className={`leading-none font-bold transition-all duration-700 delay-200 ${isEnglish
               ? "font-great-vibes text-6xl md:text-9xl"
               : `${getLocaleFontClass(locale, "")} text-5xl md:text-7xl`
-          }`}
+            }`}
           style={{
             color: "#3E5634",
             WebkitTextStroke: isEnglish ? "0.7px currentColor" : undefined,
@@ -157,11 +156,10 @@ export function HeroSection({
           {copy.groom.name}
           <span
             data-couple-subtext="groom"
-            className={`block text-sm md:text-base font-bold leading-snug whitespace-pre-line mt-1 mb-3 px-4 max-w-md mx-auto text-center drop-shadow-[0_1px_8px_rgba(255,255,255,0.92)] ${
-              isEnglish
+            className={`block text-sm md:text-base font-bold leading-snug whitespace-pre-line mt-1 mb-3 px-4 max-w-md mx-auto text-center drop-shadow-[0_1px_8px_rgba(255,255,255,0.92)] ${isEnglish
                 ? "font-display italic"
                 : getLocaleFontClass(locale, "")
-            }`}
+              }`}
             style={{ color: "#3E5634", WebkitTextStroke: "0px" }}
           >
             {copy.groom.subtext}
@@ -170,11 +168,10 @@ export function HeroSection({
 
         <p
           data-couple-amp="true"
-          className={`my-2 font-bold ${
-            isEnglish
+          className={`my-2 font-bold ${isEnglish
               ? "font-great-vibes text-3xl md:text-4xl"
               : `${getLocaleFontClass(locale, "")} text-2xl md:text-3xl`
-          }`}
+            }`}
           style={{
             color: "rgba(62, 86, 52, 0.95)",
             WebkitTextStroke: isEnglish ? "0.5px currentColor" : undefined,
@@ -186,11 +183,10 @@ export function HeroSection({
 
         <h1
           data-couple-name="bride"
-          className={`leading-none font-bold transition-all duration-700 delay-300 ${
-            isEnglish
+          className={`leading-none font-bold transition-all duration-700 delay-300 ${isEnglish
               ? "font-great-vibes text-6xl md:text-9xl"
               : `${getLocaleFontClass(locale, "")} text-5xl md:text-7xl`
-          }`}
+            }`}
           style={{
             color: "#3E5634",
             WebkitTextStroke: isEnglish ? "0.7px currentColor" : undefined,
@@ -201,11 +197,10 @@ export function HeroSection({
           {copy.bride.name}
           <span
             data-couple-subtext="bride"
-            className={`block text-sm md:text-base font-bold leading-snug whitespace-pre-line mt-1 mb-3 px-4 max-w-md mx-auto text-center drop-shadow-[0_1px_8px_rgba(255,255,255,0.92)] ${
-              isEnglish
+            className={`block text-sm md:text-base font-bold leading-snug whitespace-pre-line mt-1 mb-3 px-4 max-w-md mx-auto text-center drop-shadow-[0_1px_8px_rgba(255,255,255,0.92)] ${isEnglish
                 ? "font-display italic"
                 : getLocaleFontClass(locale, "")
-            }`}
+              }`}
             style={{ color: "#3E5634", WebkitTextStroke: "0px" }}
           >
             {copy.bride.subtext}

@@ -6,7 +6,7 @@ import {
   type InvitationCopy,
   type Locale,
 } from "../data/invitation-data";
-import { HeartDivider, RevealSection } from "./Ornaments";
+import { GoldHeartDivider, RevealSection } from "./Ornaments";
 
 interface TimeLeft {
   days: string;
@@ -45,10 +45,12 @@ export function CountdownSection({
   copy,
   targetDateIso,
   locale,
+  embedded = false,
 }: {
   copy: InvitationCopy;
   targetDateIso: string;
   locale: Locale;
+  embedded?: boolean;
 }) {
   const getRemainingSecondsSnapshot = useCallback(() => {
     const targetMs = new Date(targetDateIso).getTime();
@@ -69,42 +71,59 @@ export function CountdownSection({
     { value: timeLeft.seconds, label: copy.countdown.seconds },
   ];
 
-  return (
-    <RevealSection>
-      <div className="text-center relative">
-        <h2
-          className={`text-4xl md:text-5xl text-primary mb-3 ${
-            locale === "en"
-              ? "font-calligraphy"
-              : `${getLocaleFontClass(locale, "")} font-bold`
-          }`}
-        >
-          {copy.countdown.title}
-        </h2>
+  const content = (
+    <div className="text-center relative">
+      <GoldHeartDivider className="mb-4" />
+      <h2
+        className={`${
+          embedded ? "text-3xl sm:text-4xl md:text-5xl mb-1" : "text-4xl md:text-5xl mb-2"
+        } text-[#1d3b27] ${
+          locale === "en"
+            ? "font-calligraphy"
+            : `${getLocaleFontClass(locale, "")} font-bold`
+        }`}
+      >
+        {copy.countdown.title}
+      </h2>
 
-        <HeartDivider />
+      <GoldHeartDivider className="my-3.5" />
 
-        <div className="flex justify-center gap-2 sm:gap-4 md:gap-6">
-          {units.map((unit) => (
-            <div key={unit.label} className="text-center">
-              <div className="w-14 sm:w-20 md:w-24 px-1 py-2 sm:px-3 sm:py-3 md:py-4 mb-2 rounded-lg border border-primary/20 bg-primary/10 backdrop-blur-sm">
-                <div className="font-display text-2xl sm:text-4xl md:text-5xl font-bold text-foreground tabular-nums">
-                  {unit.value}
-                </div>
-              </div>
-              <p
-                className={`text-[10px] sm:text-xs md:text-sm text-muted-foreground ${
-                  locale === "en"
-                    ? "uppercase tracking-wider"
-                    : getLocaleFontClass(locale, "")
-                }`}
+      <div className="flex justify-center gap-2.5 sm:gap-4 md:gap-5">
+        {units.map((unit) => (
+          <div key={unit.label} className="text-center">
+            <div
+              className={`${
+                embedded
+                  ? "w-14 sm:w-18 md:w-20 px-1 py-2 sm:px-2.5 sm:py-2.5"
+                  : "w-14 sm:w-20 md:w-24 px-1 py-2 sm:px-3 sm:py-3 md:py-4"
+              } mb-1.5 rounded-lg border border-[#d2b36a] bg-gradient-to-b from-[#fdfaf1] to-[#f3ead4] shadow-[0_6px_16px_-6px_rgba(130,98,32,0.28),inset_0_1px_0_rgba(255,255,255,0.9)]`}
+            >
+              <div
+                className={`font-display ${
+                  embedded ? "text-2xl sm:text-3xl md:text-4xl" : "text-2xl sm:text-4xl md:text-5xl"
+                } font-bold text-[#1d3b27] tabular-nums`}
               >
-                {unit.label}
-              </p>
+                {unit.value}
+              </div>
             </div>
-          ))}
-        </div>
+            <p
+              className={`text-[10px] sm:text-xs md:text-sm text-[#4a5b43] ${
+                locale === "en"
+                  ? "uppercase tracking-wider"
+                  : getLocaleFontClass(locale, "")
+              }`}
+            >
+              {unit.label}
+            </p>
+          </div>
+        ))}
       </div>
-    </RevealSection>
+    </div>
   );
+
+  if (embedded) {
+    return <div className="mt-5 pt-1">{content}</div>;
+  }
+
+  return <RevealSection>{content}</RevealSection>;
 }

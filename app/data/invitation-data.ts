@@ -4,6 +4,7 @@ export interface TimelineEvent {
   time: string;
   title: string;
   description?: string;
+  icon?: string;
 }
 
 export interface TimelineDay {
@@ -23,6 +24,10 @@ export interface InvitationCopy {
     subtext: string;
   };
   welcomeMessage: string;
+  welcomeIntro?: string;
+  welcomeCoupleLeft?: string;
+  welcomeCoupleRight?: string;
+  welcomeBlessing?: string;
   scratch: {
     title: string;
     hint: string;
@@ -53,7 +58,7 @@ export interface InvitationCopy {
     address: string;
     openMap: string;
   };
-  preWedding: {
+  preWedding?: {
     title: string;
     days: TimelineDay[];
   };
