@@ -1,5 +1,11 @@
 export type Locale = "en" | "ur" | "hi";
 
+export interface ContactItem {
+  name: string;
+  phone: string;
+  whatsapp?: string;
+}
+
 export interface TimelineEvent {
   time: string;
   title: string;
@@ -14,7 +20,13 @@ export interface TimelineDay {
 
 export interface InvitationCopy {
   langToggleLabel?: string;
+  bismillahArabic?: string;
+  bismillahTranslation?: string;
   heroMessage: string;
+  heroFooter?: string;
+  heroLead?: string;
+  heroHighlight?: string;
+  heroTail?: string;
   groom: {
     name: string;
     subtext: string;
@@ -70,6 +82,8 @@ export interface InvitationCopy {
     message: string;
     couple: string;
     footerNote: string;
+    contactTitle?: string;
+    contacts?: ContactItem[];
   };
 }
 

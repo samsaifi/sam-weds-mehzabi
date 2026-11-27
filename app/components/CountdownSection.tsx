@@ -75,13 +75,11 @@ export function CountdownSection({
     <div className="text-center relative">
       <GoldHeartDivider className="mb-4" />
       <h2
-        className={`${
-          embedded ? "text-3xl sm:text-4xl md:text-5xl mb-1" : "text-4xl md:text-5xl mb-2"
-        } text-[#1d3b27] ${
-          locale === "en"
+        className={`${embedded ? "text-lg  mb-1" : "  mb-2"
+          } text-[#1d3b27] ${locale === "en"
             ? "font-calligraphy"
             : `${getLocaleFontClass(locale, "")} font-bold`
-        }`}
+          }`}
       >
         {copy.countdown.title}
       </h2>
@@ -92,26 +90,23 @@ export function CountdownSection({
         {units.map((unit) => (
           <div key={unit.label} className="text-center">
             <div
-              className={`${
-                embedded
-                  ? "w-14 sm:w-18 md:w-20 px-1 py-2 sm:px-2.5 sm:py-2.5"
-                  : "w-14 sm:w-20 md:w-24 px-1 py-2 sm:px-3 sm:py-3 md:py-4"
-              } mb-1.5 rounded-lg border border-[#d2b36a] bg-gradient-to-b from-[#fdfaf1] to-[#f3ead4] shadow-[0_6px_16px_-6px_rgba(130,98,32,0.28),inset_0_1px_0_rgba(255,255,255,0.9)]`}
+              className={`${embedded
+                ? "w-14 sm:w-18 md:w-20 px-1 py-2 sm:px-2.5 sm:py-2.5"
+                : "w-14 sm:w-20 md:w-24 px-1 py-2 sm:px-3 sm:py-3 md:py-4"
+                } mb-1.5 rounded-lg border border-[#d2b36a] bg-gradient-to-b from-[#fdfaf1] to-[#f3ead4] shadow-[0_6px_16px_-6px_rgba(130,98,32,0.28),inset_0_1px_0_rgba(255,255,255,0.9)]`}
             >
               <div
-                className={`font-display ${
-                  embedded ? "text-2xl sm:text-3xl md:text-4xl" : "text-2xl sm:text-4xl md:text-5xl"
-                } font-bold text-[#1d3b27] tabular-nums`}
+                className={`font-display ${embedded ? "text-2xl sm:text-3xl md:text-4xl" : "text-2xl sm:text-4xl md:text-5xl"
+                  } font-bold text-[#1d3b27] tabular-nums`}
               >
                 {unit.value}
               </div>
             </div>
             <p
-              className={`text-[10px] sm:text-xs md:text-sm text-[#4a5b43] ${
-                locale === "en"
-                  ? "uppercase tracking-wider"
-                  : getLocaleFontClass(locale, "")
-              }`}
+              className={`text-[10px] sm:text-xs md:text-sm text-[#4a5b43] ${locale === "en"
+                ? "uppercase tracking-wider"
+                : getLocaleFontClass(locale, "")
+                }`}
             >
               {unit.label}
             </p>

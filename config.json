@@ -25,23 +25,27 @@
   },
   "locales": {
     "en": {
-      "heroMessage": "We're getting married",
+      "bismillahArabic": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+      "bismillahTranslation": "In the Name of Allah,\nthe Most Merciful",
+      "heroMessage": "Together with their families",
+      "heroFooter": "invite you to the blessed Nikah\nceremony",
+      "heroLead": "invite you to the blessed",
+      "heroHighlight": "Nikah",
+      "heroTail": "ceremony",
       "groom": {
-        "name": "Sam Saifi",
-        "subtext": "Son of Late Mr. Istiyak Hussain\n& Mrs. Parveen Jahan"
+        "name": "Sam"
       },
       "bride": {
-        "name": "Nora",
-        "subtext": "Daughter of Mr. Umar Saifi &\nMrs. Shagufta Saifi"
+        "name": "Nora"
       },
       "welcomeMessage": "We are honored to welcome you to the Wedding ceremony of Sam Saiif & Nora Saifi\nAs they begin their journey together in faith and love,\nwe thank you for being part of this blessed occasion ❤",
-      "welcomeIntro": "We are honored to welcome \n you tothe Wedding \n ceremony of",
+      "welcomeIntro": "We are honored to welcome\nyou to the Wedding\nceremony of",
       "welcomeCoupleLeft": "Sam Saiif",
       "welcomeCoupleRight": "Nora Saifi",
-      "welcomeBlessing": "As they begin their journey\ntogether in faith and love,\nwe thank you for being part of\n thisblessed occasion ❤",
+      "welcomeBlessing": "As they begin their journey\ntogether in faith and love,\nwe thank you for being part of\nthis blessed occasion ❤",
       "scratch": {
         "title": "Scratch to Reveal",
-        "hint": "Scratch the heart",
+        "hint": "Scratch the card to reveal\na special message",
         "revealLabel": "You're Invited!",
         "date": "January 20, 2027",
         "day": "Wednesday",
@@ -67,11 +71,7 @@
             "events": [
               {
                 "time": "7:00 PM",
-                "title": "Mandah"
-              },
-              {
-                "time": "10:00 PM",
-                "title": "Haldi"
+                "title": "Mandah  & Haldi"
               }
             ]
           },
@@ -110,8 +110,8 @@
       "venue": {
         "title": "Venue",
         "name": "ROYAL PALACE BANQUET HALL",
-        "address": "94MC+QQ9, Jassaganja, Shivlalpur Khazanchi, Uttarakhand 244715",
-        "openMap": " "
+        "address": "94MC+QQ9, Jassaganja, Shivlalpur Khazanchi, Ramanagar, Uttarakhand 244715",
+        "openMap": "View on Map"
       },
       "gifts": {
         "title": "Gifts",
@@ -120,11 +120,27 @@
       "closing": {
         "message": "We can't wait to celebrate with you!",
         "couple": "Sam Saiif & Nora Saifi",
-        "footerNote": "Royal Grace Wedding Invitation"
+        "footerNote": "Royal Grace Wedding Invitation",
+        "contactTitle": "Contact & RSVP",
+        "contacts": [
+          {
+            "name": "Sam Saifi",
+            "phone": "+91 98765 43210",
+            "whatsapp": "919876543210"
+          },
+          {
+            "name": "Nora Saifi",
+            "phone": "+91 87654 32109",
+            "whatsapp": "918765432109"
+          }
+        ]
       }
     },
     "ur": {
-      "heroMessage": "ہماری شادی کی تقریب میں خوش آمدید",
+      "bismillahArabic": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+      "bismillahTranslation": "اللہ کے نام سے جو نہایت مہربان، رحم والا ہے",
+      "heroMessage": "اپنے خاندانوں کے ہمراہ",
+      "heroFooter": "آپ کو نکاح کی بابرکت تقریب میں شرکت کی دعوت دیتے ہیں",
       "groom": {
         "name": "سام سیفی",
         "subtext": "فرزندِ مرحوم اشتیاق حسین\nو محترمہ پروین جہاں"
@@ -199,7 +215,7 @@
             "events": [
               {
                 "time": "7:00 PM",
-                "title": "استقبالیہ / دعوتِ ولیمہ (مرکزی تقریب)",
+                "title": "استقبالیہ / دعوتِ ولیمہ ",
                 "description": "ہم آپ کو خوش آمدید کہتے ہیں.. ❤"
               }
             ]
@@ -210,7 +226,7 @@
         "title": "مقامِ تقریب",
         "name": "رائل پیلس بینکوئٹ ہال",
         "address": "94MC+QQ9، جسّاگنجہ، شولال پور خزانچی، اتراکھنڈ 244715",
-        "openMap": "گوگل میپس میں کھولیں"
+        "openMap": "نقشے پر دیکھیں"
       },
       "gifts": {
         "title": "تحائف",
@@ -219,11 +235,27 @@
       "closing": {
         "message": "آپ کے ساتھ خوشیاں بانٹنے کا بے صبری سے انتظار ہے!",
         "couple": "سام سیفی اور نورا سیفی",
-        "footerNote": "رائل گریس دعوت نامہ"
+        "footerNote": "رائل گریس دعوت نامہ",
+        "contactTitle": "رابطہ اور آر ایس وی پی",
+        "contacts": [
+          {
+            "name": "سام سیفی",
+            "phone": "+91 98765 43210",
+            "whatsapp": "919876543210"
+          },
+          {
+            "name": "نورا سیفی",
+            "phone": "+91 87654 32109",
+            "whatsapp": "918765432109"
+          }
+        ]
       }
     },
     "hi": {
-      "heroMessage": "हमारे विवाह समारोह में आपका स्वागत है",
+      "bismillahArabic": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+      "bismillahTranslation": "अल्लाह के नाम से जो बड़ा मेहरबान, निहायत रहम वाला है",
+      "heroMessage": "अपने परिवारों के साथ",
+      "heroFooter": "आपको निकाह के मुबारक समारोह में सादर आमंत्रित करते हैं",
       "groom": {
         "name": "सैम सैफ़ी",
         "subtext": "सुपुत्र स्व. श्री इश्तियाक़ हुसैन\nएवं श्रीमती परवीन जहाँ"
@@ -298,7 +330,7 @@
             "events": [
               {
                 "time": "7:00 PM",
-                "title": "रिसेप्शन (मुख्य कार्यक्रम)",
+                "title": "रिसेप्शन",
                 "description": "आपका हार्दिक स्वागत है.. ❤"
               }
             ]
@@ -309,7 +341,7 @@
         "title": "कार्यक्रम स्थल",
         "name": "रॉयल पैलेस बैंक्वेट हॉल",
         "address": "94MC+QQ9, जस्सागंजा, शिवलालपुर खजांची, उत्तराखंड 244715",
-        "openMap": "गूगल मैप्स में खोलें"
+        "openMap": "मैप पर देखें"
       },
       "gifts": {
         "title": "उपहार",
@@ -318,7 +350,20 @@
       "closing": {
         "message": "आपके साथ खुशियाँ मनाने का बेसब्री से इंतज़ार है!",
         "couple": "सैम सैफ़ी एवं नोरा सैफ़ी",
-        "footerNote": "रॉयल ग्रेस विवाह आमंत्रण"
+        "footerNote": "रॉयल ग्रेस विवाह आमंत्रण",
+        "contactTitle": "संपर्क एवं आरएसवीपी",
+        "contacts": [
+          {
+            "name": "सैम सैफ़ी",
+            "phone": "+91 98765 43210",
+            "whatsapp": "919876543210"
+          },
+          {
+            "name": "नोरा सैफ़ी",
+            "phone": "+91 87654 32109",
+            "whatsapp": "918765432109"
+          }
+        ]
       }
     }
   }

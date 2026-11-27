@@ -1,33 +1,25 @@
 "use client";
 
-import {
-  Clock,
-  ExternalLink,
-  Gift,
-  Globe,
-  MapPin,
-  Volume2,
-  VolumeX,
-} from "lucide-react";
-import Image from "next/image";
+import { Globe, Volume2, VolumeX } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import {
   getLocaleFontClass,
   type InvitationConfig,
   type Locale,
 } from "../data/invitation-data";
+import { ClosingSection } from "./ClosingSection";
 import { CountdownSection } from "./CountdownSection";
 import { HeroSection } from "./HeroSection";
-import {
-  CornerFlourish,
-  GoldHeartCrest,
-  GoldHeartDivider,
-  HeartDivider,
-  RevealSection,
-  WaveDivider,
-} from "./Ornaments";
+import { RevealSection } from "./Ornaments";
 import { ScratchReveal } from "./ScratchReveal";
-import { OrnateTimelineList } from "./TimelineSection";
+import { TapCelebration } from "./TapCelebration";
+import {
+  OrnateTimelineList,
+  TimelineBottomFlourish,
+  TimelineTopClockCrest,
+} from "./TimelineSection";
+import { VenueSection } from "./VenueSection";
+import { WelcomeSection } from "./WelcomeSection";
 
 const LOCALE_LABELS: { code: Locale; label: string }[] = [
   { code: "en", label: "English" },
@@ -37,12 +29,50 @@ const LOCALE_LABELS: { code: Locale; label: string }[] = [
 
 export function RoyalGraceTemplate({ config }: { config: InvitationConfig }) {
   const [locale, setLocale] = useState<Locale>("en");
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
   const [videoPlaying, setVideoPlaying] = useState(false);
+  const [videoCompleted, setVideoCompleted] = useState(false);
   const [heartRevealed, setHeartRevealed] = useState(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const chordIntervalRef = useRef<number | null>(null);
   const snapLockUntilRef = useRef<number>(0);
+  const langSwitcherRef = useRef<HTMLDivElement | null>(null);
+  const videoCompletedRef = useRef(false);
+
+  useEffect(() => {
+    videoCompletedRef.current = videoCompleted;
+    const html = document.documentElement;
+    const body = document.body;
+
+    if (!videoCompleted) {
+      html.style.overflow = "hidden";
+      body.style.overflow = "hidden";
+      window.scrollTo(0, 0);
+    } else {
+      html.style.overflow = "";
+      body.style.overflow = "";
+    }
+
+    return () => {
+      html.style.overflow = "";
+      body.style.overflow = "";
+    };
+  }, [videoCompleted]);
+
+  useEffect(() => {
+    if (!langMenuOpen) return;
+    const handleOutside = (e: PointerEvent) => {
+      if (
+        langSwitcherRef.current &&
+        !langSwitcherRef.current.contains(e.target as Node)
+      ) {
+        setLangMenuOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", handleOutside);
+    return () => document.removeEventListener("pointerdown", handleOutside);
+  }, [langMenuOpen]);
 
   const availableLocales = LOCALE_LABELS.filter((item) =>
     Boolean(config.locales[item.code])
@@ -134,6 +164,11 @@ export function RoyalGraceTemplate({ config }: { config: InvitationConfig }) {
     };
 
     const handleWheel = (e: WheelEvent) => {
+      if (!videoCompletedRef.current) {
+        e.preventDefault();
+        return;
+      }
+
       if (Math.abs(e.deltaY) < 8 || Math.abs(e.deltaY) <= Math.abs(e.deltaX)) {
         return;
       }
@@ -159,22 +194,47 @@ export function RoyalGraceTemplate({ config }: { config: InvitationConfig }) {
       touchStartY = e.touches[0]?.clientY ?? 0;
     };
 
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!videoCompletedRef.current) {
+        e.preventDefault();
+      }
+    };
+
     const handleTouchEnd = (e: TouchEvent) => {
-      if (touchIgnored || Date.now() < snapLockUntilRef.current) return;
+      if (
+        !videoCompletedRef.current ||
+        touchIgnored ||
+        Date.now() < snapLockUntilRef.current
+      ) {
+        return;
+      }
       const endY = e.changedTouches[0]?.clientY ?? touchStartY;
       const diff = touchStartY - endY;
       if (Math.abs(diff) < 36) return;
       scrollStep(diff > 0);
     };
 
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        !videoCompletedRef.current &&
+        ["ArrowDown", "PageDown", "Space", "End"].includes(e.code)
+      ) {
+        e.preventDefault();
+      }
+    };
+
     window.addEventListener("wheel", handleWheel, { passive: false });
     window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
     window.addEventListener("touchend", handleTouchEnd, { passive: true });
+    window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.cancelAnimationFrame(rafId);
       window.removeEventListener("wheel", handleWheel);
       window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("touchend", handleTouchEnd);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
@@ -275,29 +335,50 @@ export function RoyalGraceTemplate({ config }: { config: InvitationConfig }) {
         }}
       />
 
-      {/* Floating Bottom-Left Language Switcher (English / Urdu / Hindi) */}
+      {/* Tap-anywhere celebratory sparkle/confetti burst */}
+      <TapCelebration />
+
+      {/* Floating Top-Left Language Switcher (opens on Globe tap) */}
       {availableLocales.length > 1 && (
         <div
+          ref={langSwitcherRef}
           dir="ltr"
-          className="fixed bottom-4 left-4 z-50 flex items-center gap-1 p-1 rounded-full bg-card/90 backdrop-blur-sm border border-primary/30 shadow-gold"
+          className="fixed top-4 left-4 z-50 flex items-center gap-1 p-1 rounded-full bg-card/90 backdrop-blur-sm border border-primary/30 shadow-gold"
         >
-          <Globe size={14} className="text-primary mx-2 shrink-0" />
-          {availableLocales.map((item) => {
-            const active = activeLocale === item.code;
-            return (
-              <button
-                key={item.code}
-                type="button"
-                onClick={() => setLocale(item.code)}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition-colors cursor-pointer ${active
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-foreground hover:bg-primary/10"
-                  }`}
-              >
-                {item.label}
-              </button>
-            );
-          })}
+          <button
+            type="button"
+            onClick={() => setLangMenuOpen((prev) => !prev)}
+            aria-expanded={langMenuOpen}
+            aria-label="Toggle language menu"
+            className={`inline-flex items-center justify-center rounded-full h-8 w-8 transition-colors cursor-pointer shrink-0 ${
+              langMenuOpen
+                ? "bg-primary/15 text-primary"
+                : "text-primary hover:bg-primary/10"
+            }`}
+          >
+            <Globe size={16} />
+          </button>
+
+          {langMenuOpen &&
+            availableLocales.map((item) => {
+              const active = activeLocale === item.code;
+              return (
+                <button
+                  key={item.code}
+                  type="button"
+                  onClick={() => {
+                    setLocale(item.code);
+                    setLangMenuOpen(false);
+                  }}
+                  className={`px-3 py-1 rounded-full text-xs font-medium transition-colors cursor-pointer ${active
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-foreground hover:bg-primary/10"
+                    }`}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
         </div>
       )}
 
@@ -327,6 +408,7 @@ export function RoyalGraceTemplate({ config }: { config: InvitationConfig }) {
         }}
         onVideoEnd={() => {
           setVideoPlaying(false);
+          setVideoCompleted(true);
         }}
       />
 
@@ -341,86 +423,7 @@ export function RoyalGraceTemplate({ config }: { config: InvitationConfig }) {
         }}
       >
         {/* Welcome Blessing Message */}
-        <section
-          data-snap-section="true"
-          className="relative min-h-[100svh] flex flex-col justify-center px-[clamp(3.75rem,15vw,15rem)] py-14 md:py-20 overflow-hidden"
-        >
-          <div className="max-w-xl mx-auto text-center relative rounded-[2rem]   px-5 py-8 sm:px-10 sm:py-10  ">
-            <GoldHeartCrest className="mb-4" />
-
-            {copy.welcomeIntro &&
-              copy.welcomeCoupleLeft &&
-              copy.welcomeCoupleRight &&
-              copy.welcomeBlessing ? (
-              <>
-                <p
-                  className={`text-lg sm:text-2xl md:text-[1.7rem] leading-relaxed whitespace-pre-line ${getLocaleFontClass(
-                    activeLocale,
-                    "font-calligraphic italic"
-                  )}`}
-                  style={{ color: "#1d3b27" }}
-                >
-                  {copy.welcomeIntro}
-                </p>
-
-                <p
-                  className={`my-3 sm:my-4 leading-tight flex flex-col  items-center justify-center gap-x-2.5 gap-y-1 ${isEnglish
-                    ? "font-great-vibes text-4xl sm:text-5xl md:text-6xl"
-                    : `${getLocaleFontClass(activeLocale, "")} text-3xl sm:text-4xl font-bold`
-                    }`}
-                  style={{
-                    color: "#193422",
-                    WebkitTextStroke: isEnglish ? "0.45px currentColor" : undefined,
-                  }}
-                >
-                  <span>{copy.welcomeCoupleLeft}</span>
-
-                  <span
-                    className={
-                      isEnglish
-                        ? "font-great-vibes text-3xl sm:text-4xl text-5xl  text-black  "
-                        : "text-2xl sm:text-3xl text-black"
-                    }
-                    style={{ WebkitTextStroke: "0px" }}
-                  >
-                    &amp;
-                  </span>
-                  <span>{copy.welcomeCoupleRight}</span>
-                </p>
-
-                <GoldHeartDivider className="my-5" />
-
-                <p
-                  className={`text-lg sm:text-2xl md:text-[1.7rem] leading-relaxed whitespace-pre-line ${getLocaleFontClass(
-                    activeLocale,
-                    "font-calligraphic italic"
-                  )}`}
-                  style={{ color: "#1d3b27" }}
-                >
-                  {copy.welcomeBlessing}
-                </p>
-
-                <GoldHeartDivider className="mt-6" />
-              </>
-            ) : (
-              <>
-                <p
-                  className={`text-xl sm:text-2xl md:text-3xl leading-relaxed whitespace-pre-wrap break-words ${getLocaleFontClass(
-                    activeLocale,
-                    "font-calligraphic italic"
-                  )}`}
-                  style={{
-                    color: "#1d3b27",
-                    textShadow: "rgba(255, 255, 255, 0.5) 0px 1px 6px",
-                  }}
-                >
-                  {copy.welcomeMessage}
-                </p>
-                <GoldHeartDivider className="mt-8" />
-              </>
-            )}
-          </div>
-        </section>
+        <WelcomeSection copy={copy} locale={activeLocale} />
 
         {/* Sections framed inside side floral vines */}
         <div>
@@ -452,9 +455,9 @@ export function RoyalGraceTemplate({ config }: { config: InvitationConfig }) {
           </RevealSection>
 
           {/* Program Timeline */}
-          <RevealSection className="!py-8 md:!py-12 pb-16 sm:pb-12">
+          <RevealSection className="!py-8 md:!py-10 pb-16 sm:pb-10">
             <div className="text-center">
-              <Clock className="mx-auto text-[#1d3b27] mb-1.5" size={24} />
+              <TimelineTopClockCrest />
               <h2
                 className={`text-4xl md:text-5xl text-[#1d3b27] mb-1 ${isEnglish
                   ? "font-calligraphy"
@@ -463,148 +466,24 @@ export function RoyalGraceTemplate({ config }: { config: InvitationConfig }) {
               >
                 {copy.timeline.title}
               </h2>
-              <GoldHeartDivider className="my-3" />
+              <TimelineBottomFlourish className="my-2.5" />
             </div>
             <OrnateTimelineList days={copy.timeline.days} locale={activeLocale} />
           </RevealSection>
 
-          {/* Venue & Map */}
-          <RevealSection>
-            <MapPin className="mx-auto text-primary mb-4" size={28} />
-            <h2
-              className={`text-4xl md:text-5xl text-primary mb-2 text-center ${isEnglish
-                ? "font-calligraphy"
-                : `${getLocaleFontClass(activeLocale, "")} font-bold`
-                }`}
-            >
-              {copy.venue.title}
-            </h2>
-            <HeartDivider />
-            <div className="text-center mb-8">
-              <p
-                className={`text-xl font-semibold mb-2 ${getLocaleFontClass(
-                  activeLocale,
-                  "font-display"
-                )}`}
-              >
-                {copy.venue.name}
-              </p>
-              <p
-                className={`text-muted-foreground ${getLocaleFontClass(
-                  activeLocale,
-                  ""
-                )}`}
-              >
-                {copy.venue.address}
-              </p>
-            </div>
+          {/* Venue */}
+          <VenueSection
+            copy={copy}
+            mapOpenUrl={config.event.mapOpenUrl}
+            locale={activeLocale}
+          />
 
-            <div className="text-center">
-              <a
-                href={config.event.mapOpenUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-xs md:text-sm font-semibold     hover:opacity-95 transition-opacity ${isEnglish
-                  ? "font-display uppercase tracking-[0.16em]"
-                  : getLocaleFontClass(activeLocale, "")
-                  }`}
-
-              >
-                <MapPin size={32} className="text-[#193422]" />
-              </a>
-            </div>
-          </RevealSection>
-
-          {/* Gifts, Closing & Footer merged into one final snap screen */}
-          <div
-            data-snap-section="true"
-            className="min-h-[100svh] flex flex-col justify-between"
-            style={{
-              backgroundImage: `url('${config.media.endBackground}')`,
-              backgroundPosition: "center bottom",
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "100% auto",
-            }}
-          >
-            <RevealSection
-              snap={false}
-              className="flex-1 flex flex-col justify-center !py-8 md:!py-12"
-            >
-              <div className="max-w-lg mx-auto text-center">
-                {/* Gifts */}
-                <Gift className="mx-auto text-primary mb-2" size={26} />
-                <h2
-                  className={`text-3xl md:text-4xl text-primary mb-1 ${isEnglish
-                    ? "font-calligraphy"
-                    : `${getLocaleFontClass(activeLocale, "")} font-bold`
-                    }`}
-                >
-                  {copy.gifts.title}
-                </h2>
-                <HeartDivider />
-                <p
-                  className={`text-sm md:text-base text-muted-foreground whitespace-pre-line leading-relaxed break-words max-w-md mx-auto ${getLocaleFontClass(
-                    activeLocale,
-                    ""
-                  )}`}
-                >
-                  {copy.gifts.description}
-                </p>
-
-                <WaveDivider className="w-full text-primary my-6" />
-
-                {/* Closing */}
-                <p
-                  className={`text-3xl md:text-5xl text-primary leading-relaxed mb-3 whitespace-pre-line ${isEnglish
-                    ? "font-calligraphy"
-                    : `${getLocaleFontClass(activeLocale, "")} font-bold`
-                    }`}
-                >
-                  {copy.closing.message}
-                </p>
-                <p
-                  className={`text-xl md:text-2xl text-muted-foreground whitespace-pre-line ${getLocaleFontClass(
-                    activeLocale,
-                    "font-calligraphy"
-                  )}`}
-                >
-                  {copy.closing.couple}
-                </p>
-                <WaveDivider className="w-full text-primary mt-6 rotate-180" />
-              </div>
-            </RevealSection>
-
-            <footer className="py-6 pb-16 sm:pb-8 px-[clamp(3.75rem,15vw,15rem)] text-center relative border-t border-border">
-              <CornerFlourish className="absolute top-2 left-2 w-12 h-12 text-primary opacity-15 pointer-events-none" />
-              <CornerFlourish className="absolute top-2 right-2 w-12 h-12 text-primary opacity-15 -scale-x-100 pointer-events-none" />
-
-              <Image
-                src={config.media.logo}
-                alt="Royal Grace Emblem"
-                width={44}
-                height={44}
-                className="mx-auto mb-2 h-11 w-11 object-contain opacity-85"
-              />
-              <p
-                className={`text-xl text-primary whitespace-pre-line ${isEnglish
-                  ? "font-calligraphy"
-                  : `${getLocaleFontClass(activeLocale, "")} font-bold`
-                  }`}
-              >
-                {copy.closing.couple}
-              </p>
-              <p className="text-xs text-muted-foreground mt-2">
-                <span
-                  className={`text-sm gold-gradient-text font-semibold ${getLocaleFontClass(
-                    activeLocale,
-                    "font-calligraphic"
-                  )}`}
-                >
-                  {copy.closing.footerNote}
-                </span>
-              </p>
-            </footer>
-          </div>
+          {/* Gifts, Contact & RSVP, Closing & Footer */}
+          <ClosingSection
+            copy={copy}
+            endBackground={config.media.endBackground}
+            locale={activeLocale}
+          />
         </div>
       </div>
     </div>

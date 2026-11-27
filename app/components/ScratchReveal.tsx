@@ -1,6 +1,7 @@
 "use client";
 
 import { CalendarPlus, Check, Copy, Download, ExternalLink } from "lucide-react";
+import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   getLocaleFontClass,
@@ -8,7 +9,7 @@ import {
   type InvitationCopy,
   type Locale,
 } from "../data/invitation-data";
-import { GoldBotanicalCrest, GoldHeartDivider, RevealSection } from "./Ornaments";
+import { GoldHeartDivider, RevealSection } from "./Ornaments";
 
 interface ConfettiPiece {
   id: number;
@@ -43,6 +44,288 @@ function createConfettiPieces(): ConfettiPiece[] {
   }));
 }
 
+/**
+ * Top golden gift box flanked by delicate gold filigree curls.
+ */
+function ScratchGiftCrest() {
+  return (
+    <svg
+      viewBox="0 0 180 54"
+      className="mx-auto w-36 sm:w-44 h-auto pointer-events-none mb-0.5 drop-shadow-[0_2px_4px_rgba(125,92,22,0.18)]"
+      fill="none"
+      aria-hidden="true"
+    >
+      <defs>
+        <linearGradient id="scratch-gift-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#f2d67d" />
+          <stop offset="50%" stopColor="#c99632" />
+          <stop offset="100%" stopColor="#8d6214" />
+        </linearGradient>
+      </defs>
+      {/* Left curl flourish */}
+      <path
+        d="M58 34C48 34 44 27 36 27C30 27 27 31 29 35C31 38 35 37 34 34M49 34C43 37 36 39 28 37"
+        stroke="url(#scratch-gift-gold)"
+        strokeWidth="1.25"
+        strokeLinecap="round"
+      />
+      {/* Right curl flourish */}
+      <path
+        d="M122 34C132 34 136 27 144 27C150 27 153 31 151 35C149 38 145 37 146 34M131 34C137 37 144 39 152 37"
+        stroke="url(#scratch-gift-gold)"
+        strokeWidth="1.25"
+        strokeLinecap="round"
+      />
+      {/* Gift box ribbon bow */}
+      <path
+        d="M90 17C85 11 76 9 76 14C76 17 83 18 90 17ZM90 17C95 11 104 9 104 14C104 17 97 18 90 17Z"
+        stroke="url(#scratch-gift-gold)"
+        strokeWidth="2"
+        strokeLinejoin="round"
+        fill="rgba(242,214,125,0.22)"
+      />
+      {/* Gift box lid */}
+      <rect
+        x="71"
+        y="17.5"
+        width="38"
+        height="7.5"
+        rx="1.8"
+        stroke="url(#scratch-gift-gold)"
+        strokeWidth="2"
+        fill="rgba(253,246,226,0.6)"
+      />
+      {/* Gift box body */}
+      <rect
+        x="74"
+        y="25"
+        width="32"
+        height="21"
+        rx="1.8"
+        stroke="url(#scratch-gift-gold)"
+        strokeWidth="2"
+        fill="rgba(253,246,226,0.45)"
+      />
+      {/* Vertical ribbon */}
+      <rect
+        x="87.5"
+        y="17.5"
+        width="5"
+        height="28.5"
+        fill="url(#scratch-gift-gold)"
+      />
+    </svg>
+  );
+}
+
+/**
+ * Compact centered gold filigree scroll flourish for above/below Save the Date.
+ */
+function ScratchGoldScroll({
+  wide = false,
+  className = "",
+}: {
+  wide?: boolean;
+  className?: string;
+}) {
+  return (
+    <svg
+      viewBox="0 0 220 34"
+      className={`mx-auto ${wide ? "w-40 sm:w-48" : "w-32 sm:w-36"} h-auto pointer-events-none ${className}`}
+      fill="none"
+      aria-hidden="true"
+    >
+      <defs>
+        <linearGradient id="scratch-scroll-gold" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#d9b259" stopOpacity="0" />
+          <stop offset="22%" stopColor="#c79532" />
+          <stop offset="50%" stopColor="#f0d17b" />
+          <stop offset="78%" stopColor="#c79532" />
+          <stop offset="100%" stopColor="#d9b259" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      {/* Horizontal hairlines */}
+      <path
+        d="M12 16H82M138 16H208"
+        stroke="url(#scratch-scroll-gold)"
+        strokeWidth="1.2"
+      />
+      {/* Central fleur */}
+      <path
+        d="M110 6C112 11 114 14 110 18C106 14 108 11 110 6Z"
+        fill="#dfba63"
+        stroke="#a17520"
+        strokeWidth="0.9"
+      />
+      <path
+        d="M110 18C106 23 108 28 110 30C112 28 114 23 110 18Z"
+        fill="#cfa142"
+        stroke="#a17520"
+        strokeWidth="0.85"
+      />
+      {/* Symmetrical filigree curls */}
+      <path
+        d="M107 16C98 15 92 10 85 11C80 12 79 16 83 18C87 20 92 17 97 20C102 23 100 28 94 27M113 16C122 15 128 10 135 11C140 12 141 16 137 18C133 20 128 17 123 20C118 23 120 28 126 27"
+        stroke="#b6882b"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+      />
+      <circle cx="77" cy="16" r="1.4" fill="#c79532" />
+      <circle cx="143" cy="16" r="1.4" fill="#c79532" />
+    </svg>
+  );
+}
+
+/**
+ * Draw the cream-gold card face with an embossed 3D metallic gold heart
+ * directly onto the scratch canvas so the user scratches away the heart/card
+ * layer to uncover the wedding date card underneath.
+ */
+function paintCardHeartFoil(canvas: HTMLCanvasElement) {
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  if (!ctx) return;
+
+  const { width, height } = canvas;
+  ctx.globalCompositeOperation = "source-over";
+  ctx.clearRect(0, 0, width, height);
+
+  // Warm cream parchment foil base matching the reference card inside the envelope
+  const cardGrad = ctx.createLinearGradient(0, 0, width, height);
+  cardGrad.addColorStop(0, "#fdf9ee");
+  cardGrad.addColorStop(0.5, "#f7eed8");
+  cardGrad.addColorStop(1, "#ede0c1");
+  ctx.fillStyle = cardGrad;
+  ctx.fillRect(0, 0, width, height);
+
+  // Subtle parchment stipple grain + soft metallic gold shimmer flecks
+  for (let y = 2; y < height; y += 3) {
+    for (let x = 2; x < width; x += 3) {
+      const hash = ((x * 73856093) ^ (y * 19349663)) >>> 0;
+      if (hash % 11 === 0) {
+        ctx.fillStyle = "rgba(218, 179, 86, 0.14)";
+        ctx.fillRect(x, y, 1.3, 1.3);
+      } else if (hash % 17 === 0) {
+        ctx.fillStyle = "rgba(155, 118, 42, 0.08)";
+        ctx.fillRect(x, y, 1.2, 1.2);
+      }
+    }
+  }
+
+  // Thin brushed-gold inner border lines matching the mockup card
+  ctx.strokeStyle = "rgba(196, 148, 48, 0.8)";
+  ctx.lineWidth = 1.6;
+  ctx.strokeRect(7, 7, width - 14, height - 14);
+  ctx.strokeStyle = "rgba(232, 198, 114, 0.55)";
+  ctx.lineWidth = 0.8;
+  ctx.strokeRect(11, 11, width - 22, height - 22);
+
+  // Subtle radial golden aura behind the heart
+  const cx = width * 0.5;
+  const cy = height * 0.42;
+  const aura = ctx.createRadialGradient(cx, cy, 4, cx, cy, 70);
+  aura.addColorStop(0, "rgba(230, 186, 82, 0.28)");
+  aura.addColorStop(1, "rgba(230, 186, 82, 0)");
+  ctx.fillStyle = aura;
+  ctx.fillRect(0, 0, width, height);
+
+  // 3D Puffy Metallic Gold Heart path in upper-center visible area
+  const drawHeartPath = (offsetY = 0) => {
+    ctx.beginPath();
+    ctx.moveTo(cx, cy + 31 + offsetY);
+    ctx.bezierCurveTo(
+      cx - 6,
+      cy + 26 + offsetY,
+      cx - 38,
+      cy + 6 + offsetY,
+      cx - 38,
+      cy - 13 + offsetY
+    );
+    ctx.bezierCurveTo(
+      cx - 38,
+      cy - 28 + offsetY,
+      cx - 21,
+      cy - 35 + offsetY,
+      cx - 10,
+      cy - 27 + offsetY
+    );
+    ctx.bezierCurveTo(
+      cx - 4,
+      cy - 23 + offsetY,
+      cx - 1,
+      cy - 18 + offsetY,
+      cx,
+      cy - 15 + offsetY
+    );
+    ctx.bezierCurveTo(
+      cx + 1,
+      cy - 18 + offsetY,
+      cx + 4,
+      cy - 23 + offsetY,
+      cx + 10,
+      cy - 27 + offsetY
+    );
+    ctx.bezierCurveTo(
+      cx + 21,
+      cy - 35 + offsetY,
+      cx + 38,
+      cy - 28 + offsetY,
+      cx + 38,
+      cy - 13 + offsetY
+    );
+    ctx.bezierCurveTo(
+      cx + 38,
+      cy + 6 + offsetY,
+      cx + 6,
+      cy + 26 + offsetY,
+      cx,
+      cy + 31 + offsetY
+    );
+    ctx.closePath();
+  };
+
+  // Soft cast drop shadow
+  ctx.save();
+  ctx.shadowColor = "rgba(104, 72, 16, 0.36)";
+  ctx.shadowBlur = 12;
+  ctx.shadowOffsetY = 5;
+  drawHeartPath();
+  const goldGrad = ctx.createRadialGradient(
+    cx - 12,
+    cy - 18,
+    3,
+    cx + 4,
+    cy + 2,
+    46
+  );
+  goldGrad.addColorStop(0, "#fff4bd");
+  goldGrad.addColorStop(0.28, "#f0c85d");
+  goldGrad.addColorStop(0.68, "#c8922b");
+  goldGrad.addColorStop(1, "#8d5e10");
+  ctx.fillStyle = goldGrad;
+  ctx.fill();
+  ctx.restore();
+
+  // Crisp gold rim
+  ctx.save();
+  drawHeartPath();
+  ctx.strokeStyle = "#8a5c12";
+  ctx.lineWidth = 1.4;
+  ctx.stroke();
+
+  // Glossy specular sheen on upper-left lobe
+  ctx.beginPath();
+  ctx.ellipse(cx - 15, cy - 16, 9, 4.5, -0.45, 0, Math.PI * 2);
+  ctx.fillStyle = "rgba(255, 252, 232, 0.55)";
+  ctx.fill();
+
+  // Secondary subtle highlight on right lobe
+  ctx.beginPath();
+  ctx.ellipse(cx + 16, cy - 16, 6, 3, 0.45, 0, Math.PI * 2);
+  ctx.fillStyle = "rgba(255, 246, 200, 0.28)";
+  ctx.fill();
+  ctx.restore();
+}
+
 export function ScratchReveal({
   copy,
   eventConfig,
@@ -71,63 +354,7 @@ export function ScratchReveal({
   const paintScratchSurface = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    if (!ctx) return;
-
-    const { width, height } = canvas;
-    ctx.globalCompositeOperation = "source-over";
-    ctx.clearRect(0, 0, width, height);
-
-    // Base luxurious brushed gold metallic foil gradient
-    const baseGrad = ctx.createRadialGradient(
-      width * 0.34,
-      height * 0.26,
-      10,
-      width * 0.5,
-      height * 0.5,
-      width * 0.68
-    );
-    baseGrad.addColorStop(0, "#faeaab");
-    baseGrad.addColorStop(0.28, "#e6c05e");
-    baseGrad.addColorStop(0.6, "#c89632");
-    baseGrad.addColorStop(0.88, "#a6751d");
-    baseGrad.addColorStop(1, "#875c11");
-    ctx.fillStyle = baseGrad;
-    ctx.fillRect(0, 0, width, height);
-
-    // Diagonal metallic gold sheen bands
-    const sheenGrad = ctx.createLinearGradient(0, 0, width, height);
-    sheenGrad.addColorStop(0, "rgba(255, 248, 214, 0.28)");
-    sheenGrad.addColorStop(0.35, "rgba(255, 255, 255, 0)");
-    sheenGrad.addColorStop(0.5, "rgba(255, 247, 205, 0.35)");
-    sheenGrad.addColorStop(0.68, "rgba(255, 255, 255, 0)");
-    sheenGrad.addColorStop(1, "rgba(104, 68, 8, 0.24)");
-    ctx.fillStyle = sheenGrad;
-    ctx.fillRect(0, 0, width, height);
-
-    // Brushed gold foil streaks
-    ctx.strokeStyle = "rgba(255, 246, 200, 0.16)";
-    ctx.lineWidth = 1;
-    for (let i = -height; i < width + height; i += 3) {
-      ctx.beginPath();
-      ctx.moveTo(i, 0);
-      ctx.lineTo(i - height * 0.65, height);
-      ctx.stroke();
-    }
-
-    // Fine metallic gold glitter & depth flecks (deterministic)
-    for (let y = 3; y < height; y += 4) {
-      for (let x = 3; x < width; x += 4) {
-        const hash = ((x * 73856093) ^ (y * 19349663)) >>> 0;
-        if (hash % 9 === 0) {
-          ctx.fillStyle = "rgba(255, 250, 224, 0.32)";
-          ctx.fillRect(x, y, 1.5, 1.5);
-        } else if (hash % 13 === 0) {
-          ctx.fillStyle = "rgba(110, 74, 12, 0.18)";
-          ctx.fillRect(x, y, 1.5, 1.5);
-        }
-      }
-    }
+    paintCardHeartFoil(canvas);
   }, []);
 
   useEffect(() => {
@@ -195,7 +422,8 @@ export function ScratchReveal({
 
     // Irregular foil-flake edge flecks for authentic scratch texture
     for (let i = 0; i < 5; i += 1) {
-      const angle = ((strokeCountRef.current * 47 + i * 72) % 360) * (Math.PI / 180);
+      const angle =
+        ((strokeCountRef.current * 47 + i * 72) % 360) * (Math.PI / 180);
       const dist = 16 + ((strokeCountRef.current + i * 3) % 9);
       ctx.beginPath();
       ctx.arc(
@@ -212,16 +440,16 @@ export function ScratchReveal({
     lastPointRef.current = { x, y };
     strokeCountRef.current += 1;
 
-    if (strokeCountRef.current % 8 === 0) {
-      // Sample core heart area (avoids outer clipped corners)
-      const imgData = ctx.getImageData(40, 30, 180, 175).data;
+    if (strokeCountRef.current % 6 === 0) {
+      // Sample only the visible upper-center card window (above the envelope V-pocket)
+      const imgData = ctx.getImageData(38, 16, 184, 118).data;
       let transparent = 0;
       let sampled = 0;
       for (let i = 3; i < imgData.length; i += 16) {
         sampled += 1;
         if (imgData[i] < 128) transparent += 1;
       }
-      if (sampled > 0 && transparent / sampled > 0.42) {
+      if (sampled > 0 && transparent / sampled > 0.3) {
         triggerReveal();
       }
     }
@@ -266,27 +494,22 @@ export function ScratchReveal({
 
   const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventConfig.calendarTitle)}&dates=${encodeURIComponent(`${eventConfig.calendarStartUtc}/${eventConfig.calendarEndUtc}`)}&details=${encodeURIComponent(eventConfig.calendarDescription)}&location=${encodeURIComponent(eventConfig.calendarLocation)}`;
 
+  const isEnglish = locale === "en";
+
   const content = (
     <>
       <div className="text-center">
-        <svg width="0" height="0" aria-hidden="true" className="absolute">
-          <defs>
-            <clipPath id="royal-heart-clip" clipPathUnits="objectBoundingBox">
-              <path d="M0.5,0.96 C0.5,0.96 0.06,0.70 0.06,0.36 C0.06,0.18 0.20,0.06 0.32,0.06 C0.42,0.06 0.48,0.14 0.5,0.24 C0.52,0.14 0.58,0.06 0.68,0.06 C0.80,0.06 0.94,0.18 0.94,0.36 C0.94,0.70 0.5,0.96 0.5,0.96 Z" />
-            </clipPath>
-          </defs>
-        </svg>
-
+        {/* Top Gift Box Crest & Heading */}
         <div>
-          <GoldBotanicalCrest className="mb-1" />
+          <ScratchGiftCrest />
           <h2
-            className={`${
-              embedded ? "text-3xl sm:text-4xl md:text-5xl mb-1" : "text-4xl md:text-5xl mb-2"
-            } ${
-              locale === "en"
+            className={`${embedded
+              ? "text-3xl sm:text-4xl md:text-5xl mb-0.5"
+              : "text-4xl md:text-5xl mb-1.5"
+              } ${isEnglish
                 ? "font-calligraphy"
                 : `${getLocaleFontClass(locale, "")} font-bold`
-            }`}
+              }`}
             style={{
               color: "#1d3b27",
               textShadow: "rgba(250, 249, 244, 0.85) 0px 1px 6px",
@@ -294,38 +517,89 @@ export function ScratchReveal({
           >
             {copy.scratch.title}
           </h2>
-          <GoldHeartDivider className="my-3" />
+          <GoldHeartDivider className="my-2.5" />
         </div>
 
-        {/* Heart Scratch Card Patch with outer drop shadow */}
+        {/* Ornate Open Wedding Envelope + Interactive Card Scratch Patch */}
         <div
-          className={`relative mx-auto aspect-[13/12] w-full select-none ${
-            embedded ? "max-w-[195px] sm:max-w-[230px]" : "max-w-[230px] sm:max-w-[270px]"
-          }`}
+          className={`relative mx-auto w-full aspect-[300/242] select-none ${embedded
+            ? "max-w-[264px] sm:max-w-[296px]"
+            : "max-w-[288px] sm:max-w-[324px]"
+            }`}
           style={{
-            filter: "drop-shadow(0px 12px 22px rgba(96, 68, 16, 0.34))",
+            filter: "drop-shadow(0px 12px 22px rgba(96, 68, 16, 0.24))",
           }}
           onDoubleClick={triggerReveal}
         >
+          {/* Back Layer: Open Top Envelope Flap & Pocket Interior */}
+          <svg
+            viewBox="0 0 300 242"
+            className="absolute inset-0 w-full h-full pointer-events-none z-0"
+            aria-hidden="true"
+          >
+            <defs>
+              <linearGradient id="env-back-flap" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#fdf9ee" />
+                <stop offset="100%" stopColor="#efe2c4" />
+              </linearGradient>
+              <linearGradient id="env-inner-gold" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#e8c775" />
+                <stop offset="50%" stopColor="#ca9734" />
+                <stop offset="100%" stopColor="#9c6c18" />
+              </linearGradient>
+              <linearGradient id="env-rim-gold" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#f3d989" />
+                <stop offset="50%" stopColor="#c99531" />
+                <stop offset="100%" stopColor="#9d6d19" />
+              </linearGradient>
+            </defs>
+
+            {/* Outer top triangular flap */}
+            <path
+              d="M36 88 L138 14 Q150 4 162 14 L264 88 L264 224 Q264 230 258 230 L42 230 Q36 230 36 224 Z"
+              fill="url(#env-back-flap)"
+              stroke="url(#env-rim-gold)"
+              strokeWidth="2.4"
+              strokeLinejoin="round"
+            />
+            {/* Rich golden inner flap bevel lining */}
+            <path
+              d="M44 88 L140 19 Q150 11 160 19 L256 88 L256 112 L44 112 Z"
+              fill="url(#env-inner-gold)"
+              opacity="0.92"
+            />
+            {/* Dark warm pocket shadow inside envelope */}
+            <path d="M48 86 L252 86 L252 178 L48 178 Z" fill="#6d4b16" opacity="0.28" />
+          </svg>
+
+          {/* Middle Layer: Interactive Invitation Insert Card */}
           <div
-            className="absolute inset-0 overflow-hidden"
-            style={{ clipPath: 'url("#royal-heart-clip")' }}
+            className={`absolute left-[18%] right-[18%] z-10 overflow-hidden rounded-[4px] border border-[#cfa142] bg-[#fbf8ee] shadow-[0_2px_10px_rgba(64,46,12,0.18)] transition-transform duration-700 ease-out ${revealed ? "-translate-y-2" : "translate-y-0"
+              }`}
+            style={{
+              top: "14.5%",
+              height: "66%",
+            }}
           >
             {/* Revealed invitation details underneath */}
             <div
-              className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
+              className="absolute inset-0 flex flex-col items-center justify-center px-3 pt-2 pb-10 sm:pb-11 text-center"
               style={{
                 backgroundColor: "rgb(251, 249, 244)",
                 backgroundImage:
-                  "radial-gradient(rgba(255, 254, 250, 0.96) 0%, rgba(245, 239, 224, 0.85) 70%, rgba(232, 217, 180, 0.72) 100%)",
+                  "radial-gradient(rgba(255, 254, 250, 0.98) 0%, rgba(246, 239, 223, 0.9) 75%, rgba(235, 220, 184, 0.78) 100%)",
               }}
             >
+              {/* Crisp double inner gold frame */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-[5px] rounded-[2px] border border-[#cfa144]/75"
+              />
               <p
-                className={`text-lg sm:text-xl mb-1 transition-all duration-500 ${
-                  locale === "en"
-                    ? "font-calligraphic italic"
-                    : getLocaleFontClass(locale, "")
-                }`}
+                className={`text-sm sm:text-base leading-tight mb-0.5 transition-all duration-500 ${isEnglish
+                  ? "font-calligraphic italic"
+                  : getLocaleFontClass(locale, "")
+                  }`}
                 style={{
                   color: "#1d3b27",
                   opacity: revealed || hasScratched ? 1 : 0,
@@ -335,37 +609,30 @@ export function ScratchReveal({
                 {copy.scratch.revealLabel}
               </p>
               <p
-                className="font-display text-sm sm:text-base font-bold"
+                className="font-display text-xs sm:text-sm font-bold leading-snug"
                 style={{ color: "#1d3b27" }}
               >
                 {copy.scratch.date}
               </p>
               <p
-                className="font-calligraphic text-xs sm:text-sm"
+                className="font-calligraphic text-[11px] sm:text-xs leading-tight"
                 style={{ color: "#2b4d36" }}
               >
-                {copy.scratch.day}
-              </p>
-              <p
-                className="font-display text-[11px] font-semibold mt-0.5"
-                style={{ color: "#2b4d36" }}
-              >
-                {copy.scratch.time}
+                {copy.scratch.day} &bull; {copy.scratch.time}
               </p>
               <span
                 aria-hidden="true"
-                className="mt-1 inline-block w-1.5 h-1.5 rotate-45 bg-[#c79d42]/80"
+                className="mt-1 inline-block w-1.5 h-1.5 rotate-45 bg-[#c79d42]/85"
               />
             </div>
 
-            {/* Interactive Metallic Scratch Foil Canvas */}
+            {/* Interactive Scratch Foil Canvas (Heart + Parchment Card Surface) */}
             <canvas
               ref={canvasRef}
               width={260}
-              height={240}
-              className={`absolute inset-0 w-full h-full cursor-crosshair touch-none transition-opacity duration-700 ${
-                revealed ? "opacity-0 pointer-events-none" : "opacity-100"
-              }`}
+              height={210}
+              className={`absolute inset-0 w-full h-full cursor-crosshair touch-none transition-opacity duration-700 ${revealed ? "opacity-0 pointer-events-none" : "opacity-100"
+                }`}
               onPointerDown={(e) => {
                 e.currentTarget.setPointerCapture(e.pointerId);
                 isDrawingRef.current = true;
@@ -388,131 +655,116 @@ export function ScratchReveal({
                 lastPointRef.current = null;
               }}
             />
-
-            {/* 3D Puffed Foil Rim Vignette & Specular Gloss */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background:
-                  "radial-gradient(rgba(0, 0, 0, 0) 68%, rgba(25, 34, 18, 0.28) 88%, rgba(16, 22, 11, 0.5) 100%)",
-                mixBlendMode: "multiply",
-              }}
-            />
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background:
-                  "radial-gradient(at 36% 24%, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0.08) 24%, rgba(255, 255, 255, 0) 46%)",
-              }}
-            />
           </div>
 
-          {/* Crisp metallic gold rim outline */}
+          {/* Front Layer: Envelope V-Flaps & Embossed Damask */}
           <svg
-            viewBox="0 0 100 100"
-            className="absolute inset-0 w-full h-full pointer-events-none"
-            preserveAspectRatio="none"
+            viewBox="0 0 300 242"
+            className="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-visible"
             aria-hidden="true"
           >
+            <defs>
+              <linearGradient id="env-front-ivory" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#fdf9ee" />
+                <stop offset="65%" stopColor="#f3e9d2" />
+                <stop offset="100%" stopColor="#e8d8b7" />
+              </linearGradient>
+              <pattern
+                id="env-damask-tex"
+                width="26"
+                height="26"
+                patternUnits="userSpaceOnUse"
+              >
+                <circle
+                  cx="13"
+                  cy="13"
+                  r="6"
+                  fill="none"
+                  stroke="rgba(182,146,72,0.12)"
+                  strokeWidth="0.8"
+                />
+                <path
+                  d="M13 5C15 9 17 11 21 13C17 15 15 17 13 21C11 17 9 15 5 13C9 11 11 9 13 5Z"
+                  fill="none"
+                  stroke="rgba(182,146,72,0.1)"
+                  strokeWidth="0.7"
+                />
+              </pattern>
+            </defs>
+
+            {/* Front Left/Right Crossed Pocket Body */}
             <path
-              d="M50,96 C50,96 6,70 6,36 C6,18 20,6 32,6 C42,6 48,14 50,24 C52,14 58,6 68,6 C80,6 94,18 94,36 C94,70 50,96 50,96 Z"
+              d="M36 88 L150 174 L264 88 L264 224 Q264 230 258 230 L42 230 Q36 230 36 224 Z"
+              fill="url(#env-front-ivory)"
+              stroke="#c99834"
+              strokeWidth="2"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M36 88 L150 174 L264 88 L264 224 Q264 230 258 230 L42 230 Q36 230 36 224 Z"
+              fill="url(#env-damask-tex)"
+            />
+
+            {/* Subtle diagonal flap folds & golden piping */}
+            <path
+              d="M38 228 L150 156 L262 228"
               fill="none"
-              stroke="#b88826"
-              strokeWidth="1.8"
-              vectorEffect="non-scaling-stroke"
-              opacity="0.88"
+              stroke="#d7bc83"
+              strokeWidth="1.1"
+              opacity="0.75"
+            />
+            <path
+              d="M36 88 L150 174 L264 88"
+              fill="none"
+              stroke="#fbf3dc"
+              strokeWidth="1.2"
+              opacity="0.9"
             />
           </svg>
 
-          {/* Golden embossed lotus scratch coin resting on the edge */}
-          {!revealed && (
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -bottom-1 right-1 sm:right-2 w-10 h-10 sm:w-12 sm:h-12 rounded-full transition-opacity duration-500"
-              style={{
-                opacity: hasScratched ? 0.5 : 1,
-                filter: "drop-shadow(0 6px 10px rgba(72, 48, 8, 0.38))",
-              }}
-            >
-              <svg viewBox="0 0 48 48" className="w-full h-full">
-                <defs>
-                  <radialGradient id="gold-coin-grad" cx="35%" cy="30%" r="70%">
-                    <stop offset="0%" stopColor="#fbe9a7" />
-                    <stop offset="55%" stopColor="#d8a63c" />
-                    <stop offset="100%" stopColor="#946716" />
-                  </radialGradient>
-                </defs>
-                <circle
-                  cx="24"
-                  cy="24"
-                  r="21"
-                  fill="url(#gold-coin-grad)"
-                  stroke="#7b530e"
-                  strokeWidth="1.5"
-                />
-                <circle
-                  cx="24"
-                  cy="24"
-                  r="17.5"
-                  fill="none"
-                  stroke="#fef3c7"
-                  strokeWidth="0.9"
-                  opacity="0.7"
-                />
-                {/* Embossed lotus motif */}
-                <path
-                  d="M24 13C26.5 17 26.5 22 24 26C21.5 22 21.5 17 24 13Z"
-                  fill="none"
-                  stroke="#7b530e"
-                  strokeWidth="1.2"
-                />
-                <path
-                  d="M24 26C19 24.5 15.5 20.5 15.5 16.5C19 17.5 22 21 24 26ZM24 26C29 24.5 32.5 20.5 32.5 16.5C29 17.5 26 21 24 26Z"
-                  fill="none"
-                  stroke="#7b530e"
-                  strokeWidth="1.15"
-                />
-                <path
-                  d="M14.5 27.5C18 28.5 21.5 28 24 26C26.5 28 30 28.5 33.5 27.5"
-                  fill="none"
-                  stroke="#7b530e"
-                  strokeWidth="1.1"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </div>
-          )}
+          {/* Gold Satin Ribbon Bow, Wax Seal & Roses Image */}
+          <Image
+            src="/asset/ribbon.png"
+            alt=""
+            width={400}
+            height={200}
+            aria-hidden="true"
+            className="pointer-events-none select-none absolute left-1/2 -translate-x-1/2 bottom-[20%] w-[40%] h-auto z-30 drop-shadow-[0_4px_8px_rgba(78,54,12,0.28)]"
+          />
         </div>
 
-        {/* Subtle hint below the heart foil patch */}
+        {/* Subtle hint below the envelope */}
         {!revealed && (
-          <p className="mt-2.5 text-xs italic text-[#4e6147] font-calligraphic tracking-wide">
+          <p className="mt-2.5 text-sm sm:text-base italic whitespace-pre-line leading-snug text-[#1d3b27] font-calligraphic tracking-wide">
             {copy.scratch.hint}
           </p>
         )}
       </div>
 
-      {/* Save the Date Button + Calendar Dropdown */}
+      {/* Save the Date Button + Filigree Dividers */}
       <div
         ref={menuWrapperRef}
-        className={`${embedded ? "mt-4" : "mt-7"} flex flex-col items-center relative`}
+        className={`${embedded ? "mt-2" : "mt-4"} flex flex-col items-center relative`}
       >
+        <ScratchGoldScroll className="mb-2.5" />
+
         <button
           type="button"
           onClick={() => setMenuOpen((prev) => !prev)}
           aria-expanded={menuOpen}
-          className="group inline-flex items-center gap-2 rounded-full px-7 py-2.5 text-xs md:text-sm font-semibold uppercase tracking-[0.18em] transition-all duration-300 text-[#fbf5e6] border border-[#cfa856] hover:opacity-95 cursor-pointer"
+          className="group inline-flex items-center gap-2.5 rounded-full px-8 py-2.5 text-xs md:text-sm font-semibold uppercase tracking-[0.2em] transition-all duration-300 text-[#fbf5e6] border border-[#d4ae5b] hover:opacity-95 cursor-pointer"
           style={{
             background: "linear-gradient(180deg, #254830 0%, #193422 100%)",
             boxShadow:
-              "0 8px 20px -8px rgba(25, 52, 34, 0.55), inset 0 0 0 1px rgba(235, 206, 132, 0.25)",
+              "0 8px 20px -8px rgba(25, 52, 34, 0.55), inset 0 0 0 1px rgba(242, 217, 149, 0.28)",
           }}
         >
-          <CalendarPlus className="w-4 h-4" />
+          <CalendarPlus className="w-4 h-4 shrink-0" />
           <span>{copy.scratch.saveDate}</span>
         </button>
+
+        {!embedded && <ScratchGoldScroll wide className="mt-5" />}
+        {embedded && !revealed && <ScratchGoldScroll wide className="mt-4" />}
 
         {menuOpen && (
           <div className="absolute top-full mt-2 w-60 rounded-xl border border-primary/25 bg-[#faf7ef]/95 backdrop-blur-md shadow-elegant p-1.5 z-30 text-left">
