@@ -3,6 +3,7 @@
 import Image from "next/image";
 import {
   getLocaleFontClass,
+  withBasePath,
   type InvitationCopy,
   type Locale,
 } from "../data/invitation-data";
@@ -15,7 +16,7 @@ import { TimelineBottomFlourish } from "./TimelineSection";
 function WelcomeAmpersandDivider() {
   return (
     <Image
-      src="/asset/and.png"
+      src={withBasePath("/asset/and.png")}
       alt="&"
       width={200}
       height={100}
@@ -30,7 +31,7 @@ function WelcomeAmpersandDivider() {
 function WelcomeRoseDivider({ className = "" }: { className?: string }) {
   return (
     <Image
-      src="/asset/flower.png"
+      src={withBasePath("/asset/flower.png")}
       alt=""
       width={360}
       height={120}

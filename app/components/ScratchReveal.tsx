@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   getLocaleFontClass,
+  withBasePath,
   type EventConfig,
   type InvitationCopy,
   type Locale,
@@ -724,7 +725,7 @@ export function ScratchReveal({
 
           {/* Gold Satin Ribbon Bow, Wax Seal & Roses Image */}
           <Image
-            src="/asset/ribbon.png"
+            src={withBasePath("/asset/ribbon.png")}
             alt=""
             width={400}
             height={200}

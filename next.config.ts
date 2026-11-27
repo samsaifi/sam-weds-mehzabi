@@ -1,10 +1,18 @@
 import type { NextConfig } from "next";
 
+const basePath = "/sam-weds-mehzabi/out";
+
 const nextConfig: NextConfig = {
   /* config options here */
   output: "export",
-  cacheComponents: true,
-  partialPrefetching: true,
+  basePath,
+  trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
   turbopack: {
     rules: {
       "*.css": {

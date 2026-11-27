@@ -123,6 +123,18 @@ export interface InvitationConfig {
   };
 }
 
+export function withBasePath(assetPath: string): string {
+  if (!assetPath || /^(https?:|data:|blob:)/.test(assetPath)) {
+    return assetPath;
+  }
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+  if (!basePath || assetPath.startsWith(`${basePath}/`) || assetPath === basePath) {
+    return assetPath;
+  }
+  const normalized = assetPath.startsWith("/") ? assetPath : `/${assetPath}`;
+  return `${basePath}${normalized}`;
+}
+
 export function getLocaleFontClass(locale: Locale, englishClass: string): string {
   if (locale === "ur") return "font-urdu";
   if (locale === "hi") return "font-hindi";
