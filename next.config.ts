@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const basePath = "/sam-weds-mehzabi/out";
+const basePath = "/sam-weds-mehzabi";
 
 const nextConfig: NextConfig = {
   /* config options here */
